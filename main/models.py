@@ -1,5 +1,5 @@
 from django.db import models
-from django.template.defaultfilters import Slugify
+from django.template.defaultfilters import slugify
 from django_resized import ResizedImageField
 from django.utils import timezone
 from uuid import uuid4
@@ -43,12 +43,12 @@ class Image(models.Model):
     
     #Image Fields
     squareImage = ResizedImageField(size=[1000, 1000], crop=['middle', 'center'], default='default_square.jpg', upload_to='square')
-    landscapeImage = ResizeImageField(size=[2678, 1618], crop=['middle', 'center'], default='default_land.jpg', upload_to='landscape')
+    landscapeImage = ResizedImageField(size=[2678, 1618], crop=['middle', 'center'], default='default_land.jpg', upload_to='landscape')
     tallImage = ResizedImageField(size=[1618, 2878], crop=['middle', 'center'], default='default_tall.jpg', upload_to='tall')
     
     
     #Related Fields
-    category = models.ForeignKey(Category, null=true, blank=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE)
     
     #Utility variables
     uniqueId = models.CharField(null=True, blank=True, max_length=100)
