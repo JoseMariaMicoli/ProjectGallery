@@ -57,7 +57,7 @@ class Image(models.Model):
     last_updated = models.DateTimeField(null=True, blank=True)
     
     def __str__(self):
-        return '{} {}'.format(self.category, self.title, self.uniqueId)
+        return '{} {}'.format(self.category.title, self.uniqueId)
         
     def get_absolute_url(self):
         return reverse('image-detail', kwargs={'slug', self.slug})
@@ -67,8 +67,8 @@ class Image(models.Model):
             self.date_created = timezone.localtime(timezone.now())
         if self.uniqueId is None:
             self.uniqueId = str(uuid4()).split('-')[4]
-            self.slug = slugify('{} {}'.format(self.title, self.uniqueId))
+            self.slug = slugify('{} {}'.format(self.category.title, self.uniqueId))
             
-            self.slug = slugify('{} {}'.format(self.title, self.uniqueId))
+            self.slug = slugify('{} {}'.format(self.category.title, self.uniqueId))
             self.last_updated = timezone.localtime(timezone.now())
-            super(Category, self).save(*args, **kwargs)
+            super(Image, self).save(*args, **kwargs)
