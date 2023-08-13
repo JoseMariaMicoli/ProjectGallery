@@ -12,7 +12,7 @@ def home(request):
     
 def categoryPage(request, slug):
     category = Category.objects.get(slug=slug)
-    images = Image.objects.filter(category=category)
+    images = Image.objects.filter(category=category).order_by('-date_created')[:6]
     for x in images:
         x.shortDescription = x.description[:130]
         
