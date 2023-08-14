@@ -48,7 +48,7 @@ class Image(models.Model):
     
     
     #Related Fields
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE)
     
     #Utility variables
     uniqueId = models.CharField(null=True, blank=True, max_length=100)
@@ -71,4 +71,5 @@ class Image(models.Model):
             
             self.slug = slugify('{} {}'.format(self.category.title, self.uniqueId))
             self.last_updated = timezone.localtime(timezone.now())
+            
             super(Image, self).save(*args, **kwargs)
