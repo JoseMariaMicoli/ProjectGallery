@@ -5,8 +5,8 @@ from django.utils import timezone
 from uuid import uuid4
 from django.conf import settings
 from django.urls import reverse
-import json
-import os
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 # Create your models here.
 class Category(models.Model):
@@ -25,7 +25,7 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('category-detail', kwargs={'slug': self.slug})
         
-    def save(self, *args, **kwargs):
+    """def save(self, *args, **kwargs):
         if self.date_created is None:
             self.date_created = timezone.localtime(timezone.now())
         if self.uniqueId is None:
@@ -34,7 +34,7 @@ class Category(models.Model):
             
             self.slug = slugify('{} {}'.format(self.title, self.uniqueId))
             self.last_updated = timezone.localtime(timezone.now())
-            super(Category, self).save(*args, **kwargs)
+            super(Category, self).save(*args, **kwargs)"""
             
 class Image(models.Model):
     description = models.TextField(null=True, blank=True)
@@ -62,7 +62,7 @@ class Image(models.Model):
     def get_absolute_url(self):
         return reverse('image-detail', kwargs={'slug', self.slug})
         
-    def save(self, *args, **kwargs):
+    """def save(self, *args, **kwargs):
         if self.date_created is None:
             self.date_created = timezone.localtime(timezone.now())
         if self.uniqueId is None:
@@ -72,4 +72,26 @@ class Image(models.Model):
             self.slug = slugify('{} {}'.format(self.category.title, self.uniqueId))
             self.last_updated = timezone.localtime(timezone.now())
             
-            super(Image, self).save(*args, **kwargs)
+            super(Image, self).save(*args, **kwargs)"""
+
+@receiver(pre_save, sender=Category)
+def autoPopulateFields(sender, instance, *args, **kwargs):
+    if instance.date_created is None:
+        instance.date_created = timezone.localtime(timezone.now())
+    if instance.uniqueId is None:
+        instance.uniqueId = str(uuid4()).split('-')[4]
+        instance.slug = slugify('{} {}'.format(instance.title, instance.uniqueId))
+            
+        instance.slug = slugify('{} {}'.format(instance.title, instance.uniqueId))
+        instance.last_updated = timezone.localtime(timezone.now())     
+               
+@receiver(pre_save, sender=Image)
+def autoPopulateFields(sender, instance, *args, **kwargs):
+    if instance.date_created is None:
+        instance.date_created = timezone.localtime(timezone.now())
+    if instance.uniqueId is None:
+        instance.uniqueId = str(uuid4()).split('-')[4]
+        instance.slug = slugify('{} {}'.format(instance.category.title, instance.uniqueId))
+            
+        instance.slug = slugify('{} {}'.format(instance.category.title, instance.uniqueId))
+        instance.last_updated = timezone.localtime(timezone.now())
