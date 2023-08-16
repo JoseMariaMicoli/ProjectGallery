@@ -22,7 +22,7 @@ class Gender(models.Model):
         return '{} {}'.format(self.name, self.uniqueId)
         
     def get_absolute_url(self):
-        return reverse('image-detail', kwargs={'slug', self.slug})
+        return reverse('gender-detail', kwargs={'slug', self.slug})
 
 # Create your models here.
 class Category(models.Model):

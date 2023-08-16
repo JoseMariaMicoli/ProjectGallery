@@ -55,3 +55,13 @@ def contactView(request):
     
 def successView(request):
     return HttpResponse("Success! Thank you for your message. We will respond as soon as possible.")
+    
+def genderView(request, slug):
+    gender = Gender.objects.get(slug=slug)
+    categories = Category.objects.filter(gender=gender).order_by('-date_created')[:6]
+        
+    context = {}
+    context['categories'] = categories
+    context['gender'] = gender
+    
+    return render(request, "main/gender.html", context)
