@@ -8,10 +8,29 @@ from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
+class Gender(models.Model):
+    name = models.TextField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True)
+    
+    #Utility variables
+    uniqueId = models.CharField(null=True, blank=True, max_length=100)
+    slug = models.SlugField(null=True, blank=True, unique=True, max_length=500)
+    date_created = models.DateTimeField(null=True, blank=True)
+    last_updated = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return '{} {}'.format(self.name, self.uniqueId)
+        
+    def get_absolute_url(self):
+        return reverse('image-detail', kwargs={'slug', self.slug})
+
 # Create your models here.
 class Category(models.Model):
     #main Category variable
     title = models.CharField(null=True, blank=True, max_length=300)
+    
+    #Related Fields
+    gender = models.ForeignKey(Gender, null=True, blank=True, on_delete=models.CASCADE)
     
     #Utility variables
     uniqueId = models.CharField(null=True, blank=True, max_length=100)
@@ -57,10 +76,10 @@ class Image(models.Model):
     last_updated = models.DateTimeField(null=True, blank=True)
     
     def __str__(self):
-        return '{} {}'.format(self.category.title, self.uniqueId)
+        return '{} {}'.format(self.name, self.uniqueId)
         
     def get_absolute_url(self):
-        return reverse('image-detail', kwargs={'slug', self.slug})
+        return reverse('gender-detail', kwargs={'slug', self.slug})
         
     """def save(self, *args, **kwargs):
         if self.date_created is None:
@@ -94,4 +113,15 @@ def autoPopulateFields(sender, instance, *args, **kwargs):
         instance.slug = slugify('{} {}'.format(instance.category.title, instance.uniqueId))
             
         instance.slug = slugify('{} {}'.format(instance.category.title, instance.uniqueId))
+        instance.last_updated = timezone.localtime(timezone.now())
+        
+@receiver(pre_save, sender=Gender)
+def autoPopulateFields(sender, instance, *args, **kwargs):
+    if instance.date_created is None:
+        instance.date_created = timezone.localtime(timezone.now())
+    if instance.uniqueId is None:
+        instance.uniqueId = str(uuid4()).split('-')[4]
+        instance.slug = slugify('{} {}'.format(instance.name, instance.uniqueId))
+            
+        instance.slug = slugify('{} {}'.format(instance.name, instance.uniqueId))
         instance.last_updated = timezone.localtime(timezone.now())
