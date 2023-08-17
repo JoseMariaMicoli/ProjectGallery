@@ -28,6 +28,8 @@ class Gender(models.Model):
 class Category(models.Model):
     #main Category variable
     title = models.CharField(null=True, blank=True, max_length=300)
+    #Selfie Image Field
+    selfie = ResizedImageField(size=[1000, 1000], crop=['middle', 'center'], default='default_selfie.jpg', upload_to='selfie')
     
     #Related Fields
     gender = models.ForeignKey(Gender, null=True, blank=True, on_delete=models.CASCADE)

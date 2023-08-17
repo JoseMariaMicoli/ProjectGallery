@@ -7,9 +7,11 @@ from .forms import ContactForm
 # Create your views here.
 def home(request):
     categories = Category.objects.all()
+    genders = Gender.objects.all()
     
     context = {}
     context['categories'] = categories
+    context['genders'] = genders
     
     return render(request, 'main/index.html', context)
     
@@ -58,7 +60,7 @@ def successView(request):
     
 def genderView(request, slug):
     gender = Gender.objects.get(slug=slug)
-    categories = Category.objects.filter(gender=gender).order_by('-date_created')[:6]
+    categories = Category.objects.filter(gender=gender).order_by('-date_created')
         
     context = {}
     context['categories'] = categories
