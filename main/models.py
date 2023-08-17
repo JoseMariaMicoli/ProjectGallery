@@ -78,7 +78,7 @@ class Image(models.Model):
     last_updated = models.DateTimeField(null=True, blank=True)
     
     def __str__(self):
-        return '{} {}'.format(self.name, self.uniqueId)
+        return '{} {}'.format(self.description, self.uniqueId)
         
     def get_absolute_url(self):
         return reverse('gender-detail', kwargs={'slug', self.slug})
