@@ -7,7 +7,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from main.models import Category
+from main.models import Category, Gender
 
 # Create your models here.
 class Account(models.Model):
@@ -25,7 +25,8 @@ class Account(models.Model):
     dni_selfie = ResizedImageField(size=[1000, 1000], crop=['middle', 'center'], default='default_dni_selfie.jpg', upload_to='dni')
     
     #Related Field
-    Category = models.OneToOneField(Category, on_delete=models.CASCADE)
+    category = models.OneToOneField(Category, on_delete=models.CASCADE)
+    gender = models.OneToOneField(Gender, on_delete=models.CASCADE, null=True)
     
     #Utility variables
     uniqueId = models.CharField(null=True, blank=True, max_length=100)
