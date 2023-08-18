@@ -24,7 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #Main app views
     path('', include('main.urls')),
-    path('', include('subscription.urls'))
+    path('', include('subscription.urls')),
+    path('', include('contact.urls'))
 ]
 
 if settings.DEBUG:

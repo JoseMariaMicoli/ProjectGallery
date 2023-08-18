@@ -11,4 +11,4 @@ class SubscriptionForm(forms.Form):
     phone = forms.CharField(max_length=15, widget=forms.TextInput(attrs={'placeholder': 'Phone', 'style': 'width: 300px;', 'class': 'form-control'}), required=True)
     email = forms.CharField(validators=[EmailValidator()], widget=forms.EmailInput(attrs={'placeholder' :'Email', 'style': 'width: 300px;', 'class': 'form-control'}), required=True)
     dni_number = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'placeholder': 'D.N.I.', 'style': 'width: 300px;', 'class': 'form-control'}), required=True)
-    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), widget=forms.Select(attrs={'placeholder': 'Gender', 'style': 'width: 300px;', 'class': 'bootstrap-select'}), required=True)
+    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), widget=forms.Select(attrs={'placeholder': 'Gender', 'style': 'width: 300px;', 'class': 'form-control dropdownMenuButtont'}), required=True)
