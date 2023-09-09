@@ -25,7 +25,8 @@ urlpatterns = [
     #Main app views
     path('', include('main.urls')),
     path('', include('subscription.urls')),
-    path('', include('contact.urls'))
+    path('', include('contact.urls')),
+    path('', include('meeting.urls'))
 ]
 
 if settings.DEBUG:
